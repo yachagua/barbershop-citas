@@ -1,0 +1,427 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Citas | Barbershop</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <style>
+        .admin-container {
+            padding: 40px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .filtros-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,215,0,0.1);
+        }
+        .filtros-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .tabla-container {
+            background: rgba(255,255,255,0.02);
+            border-radius: 15px;
+            padding: 20px;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            background: #ffd700;
+            color: black;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+        td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255,215,0,0.1);
+            color: #ccc;
+        }
+        tr:hover {
+            background: rgba(255,215,0,0.05);
+        }
+        .estado {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .estado-pendiente {
+            background: rgba(255,165,0,0.2);
+            color: orange;
+        }
+        .estado-confirmada {
+            background: rgba(0,255,0,0.2);
+            color: #00ff00;
+        }
+        .estado-cancelada {
+            background: rgba(255,0,0,0.2);
+            color: #ff0000;
+        }
+        .btn-accion {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin: 0 5px;
+            transition: all 0.3s;
+        }
+        .btn-confirmar {
+            background: rgba(0,255,0,0.2);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+        }
+        .btn-confirmar:hover {
+            background: rgba(0,255,0,0.4);
+        }
+        .btn-cancelar {
+            background: rgba(255,0,0,0.2);
+            color: #ff0000;
+            border: 1px solid #ff0000;
+        }
+        .btn-cancelar:hover {
+            background: rgba(255,0,0,0.4);
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(0,0,0,0.3));
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255,215,0,0.2);
+        }
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            color: #ccc;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .refresh-btn {
+            background: rgba(255,215,0,0.1);
+            color: #ffd700;
+            border: 1px solid #ffd700;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .refresh-btn:hover {
+            background: #ffd700;
+            color: black;
+        }
+    </style>
+</head>
+<body style="background: #0a0a0a;">
+    <div class="admin-container">
+        <!-- HEADER ADMIN -->
+        <div class="admin-header">
+            <div>
+                <h1 style="color: #ffd700; font-size: 2em;">📅 GESTIÓN DE CITAS</h1>
+                <p style="color: #ccc;">Administra todas las reservas de la barbería</p>
+            </div>
+            <div style="display: flex; gap: 15px;">
+                <button onclick="cargarCitas()" class="refresh-btn">🔄 ACTUALIZAR</button>
+                <a href="servicios.html" style="background: #ffd700; color: black; padding: 10px 20px; border-radius: 5px; text-decoration: none;">✂️ SERVICIOS</a>
+                <a href="login.html" style="background: rgba(255,0,0,0.2); color: #ff0000; padding: 10px 20px; border-radius: 5px; text-decoration: none;">🔒 SALIR</a>
+            </div>
+        </div>
+
+        <!-- ESTADÍSTICAS -->
+        <div class="stats-grid" id="stats-container">
+            <div class="stat-card">
+                <div class="stat-number" id="total-citas">0</div>
+                <div class="stat-label">Total Citas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="pendientes">0</div>
+                <div class="stat-label">Pendientes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="confirmadas">0</div>
+                <div class="stat-label">Confirmadas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="canceladas">0</div>
+                <div class="stat-label">Canceladas</div>
+            </div>
+        </div>
+
+        <!-- FILTROS -->
+        <div class="filtros-card">
+            <h3 style="color: #ffd700; margin-bottom: 15px;">🔍 FILTRAR CITAS</h3>
+            <div class="filtros-grid">
+                <div>
+                    <label style="color: #ffd700; display: block; margin-bottom: 8px;">📅 Fecha</label>
+                    <input type="date" id="filtro-fecha" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,215,0,0.3); border-radius: 5px; color: white;">
+                </div>
+                <div>
+                    <label style="color: #ffd700; display: block; margin-bottom: 8px;">📌 Estado</label>
+                    <select id="filtro-estado" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,215,0,0.3); border-radius: 5px; color: white;">
+                        <option value="todas" style="background: #1a1a1a;">Todas</option>
+                        <option value="pendiente" style="background: #1a1a1a;">Pendientes</option>
+                        <option value="confirmada" style="background: #1a1a1a;">Confirmadas</option>
+                        <option value="cancelada" style="background: #1a1a1a;">Canceladas</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="color: #ffd700; display: block; margin-bottom: 8px;">🔎 Buscar</label>
+                    <input type="text" id="buscador" placeholder="Nombre o teléfono..." style="width: 100%; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,215,0,0.3); border-radius: 5px; color: white;">
+                </div>
+                <div style="display: flex; align-items: flex-end;">
+                    <button onclick="aplicarFiltros()" style="width: 100%; padding: 10px; background: #ffd700; color: black; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+                        APLICAR FILTROS
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TABLA DE CITAS -->
+        <div class="tabla-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Servicio</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-citas-body">
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 60px; color: #999;">
+                            <div style="font-size: 1.2em;">Cargando citas...</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="../assets/js/api.js"></script>
+    <script>
+        let todasLasCitas = [];
+        let serviciosMap = {};
+
+        // Verificar autenticación
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = 'login.html';
+        }
+
+        // Cargar servicios para mapear IDs a nombres
+        async function cargarServiciosMap() {
+            try {
+                const servicios = await serviciosAPI.getAdmin();
+                servicios.forEach(s => {
+                    serviciosMap[s.id] = s.nombre;
+                });
+            } catch (error) {
+                console.error('Error cargando servicios:', error);
+            }
+        }
+
+        // Cargar citas
+        async function cargarCitas() {
+            try {
+                const response = await fetch(`${API_CONFIG.baseURL}/citas`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                todasLasCitas = await response.json();
+                
+                // Actualizar estadísticas
+                actualizarEstadisticas();
+                
+                // Mostrar citas
+                mostrarCitas(todasLasCitas);
+            } catch (error) {
+                console.error('Error cargando citas:', error);
+                document.getElementById('tabla-citas-body').innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 60px; color: #ff6b6b;">
+                            ❌ Error al cargar las citas
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Actualizar estadísticas
+        function actualizarEstadisticas() {
+            const total = todasLasCitas.length;
+            const pendientes = todasLasCitas.filter(c => c.estado === 'pendiente').length;
+            const confirmadas = todasLasCitas.filter(c => c.estado === 'confirmada').length;
+            const canceladas = todasLasCitas.filter(c => c.estado === 'cancelada').length;
+
+            document.getElementById('total-citas').textContent = total;
+            document.getElementById('pendientes').textContent = pendientes;
+            document.getElementById('confirmadas').textContent = confirmadas;
+            document.getElementById('canceladas').textContent = canceladas;
+        }
+
+        // Mostrar citas en tabla
+        function mostrarCitas(citas) {
+            if (citas.length === 0) {
+                document.getElementById('tabla-citas-body').innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 60px; color: #999;">
+                            📭 No hay citas para mostrar
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            const tbody = document.getElementById('tabla-citas-body');
+            tbody.innerHTML = citas.map(cita => `
+                <tr>
+                    <td style="font-weight: bold; color: #ffd700;">#${cita.id}</td>
+                    <td>
+                        <div style="font-weight: bold;">${cita.nombre}</div>
+                        <div style="color: #999; font-size: 0.85em;">📱 ${cita.telefono}</div>
+                        <div style="color: #999; font-size: 0.85em;">✉️ ${cita.email}</div>
+                    </td>
+                    <td>${serviciosMap[cita.servicio_id] || 'Servicio'}</td>
+                    <td>${new Date(cita.fecha).toLocaleDateString('es-ES')}</td>
+                    <td>${cita.hora}</td>
+                    <td>
+                        <span class="estado estado-${cita.estado}">
+                            ${cita.estado.toUpperCase()}
+                        </span>
+                    </td>
+                    <td>
+                        ${cita.estado === 'pendiente' ? `
+                            <button onclick="confirmarCita(${cita.id})" class="btn-accion btn-confirmar">
+                                ✓ Confirmar
+                            </button>
+                        ` : ''}
+                        ${cita.estado !== 'cancelada' ? `
+                            <button onclick="cancelarCita(${cita.id})" class="btn-accion btn-cancelar">
+                                ✗ Cancelar
+                            </button>
+                        ` : ''}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Confirmar cita
+        async function confirmarCita(id) {
+            try {
+                const response = await fetch(`${API_CONFIG.baseURL}/citas/${id}/confirmar`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (response.ok) {
+                    alert('✅ Cita confirmada exitosamente');
+                    cargarCitas();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Error al confirmar la cita');
+            }
+        }
+
+        // Cancelar cita
+        async function cancelarCita(id) {
+            if (!confirm('¿Estás seguro de cancelar esta cita?')) return;
+            
+            try {
+                const response = await fetch(`${API_CONFIG.baseURL}/citas/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (response.ok) {
+                    alert('✅ Cita cancelada exitosamente');
+                    cargarCitas();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Error al cancelar la cita');
+            }
+        }
+
+        // Aplicar filtros
+        function aplicarFiltros() {
+            const fecha = document.getElementById('filtro-fecha').value;
+            const estado = document.getElementById('filtro-estado').value;
+            const busqueda = document.getElementById('buscador').value.toLowerCase();
+
+            let filtradas = [...todasLasCitas];
+
+            // Filtrar por fecha
+            if (fecha) {
+                filtradas = filtradas.filter(c => c.fecha === fecha);
+            }
+
+            // Filtrar por estado
+            if (estado !== 'todas') {
+                filtradas = filtradas.filter(c => c.estado === estado);
+            }
+
+            // Filtrar por búsqueda
+            if (busqueda) {
+                filtradas = filtradas.filter(c => 
+                    c.nombre.toLowerCase().includes(busqueda) ||
+                    c.telefono.includes(busqueda) ||
+                    c.email.toLowerCase().includes(busqueda)
+                );
+            }
+
+            mostrarCitas(filtradas);
+        }
+
+        // Event listeners
+        document.getElementById('filtro-fecha').addEventListener('change', aplicarFiltros);
+        document.getElementById('filtro-estado').addEventListener('change', aplicarFiltros);
+        document.getElementById('buscador').addEventListener('keyup', aplicarFiltros);
+
+        // Inicializar
+        async function init() {
+            await cargarServiciosMap();
+            await cargarCitas();
+        }
+
+        init();
+    </script>
+</body>
+</html>

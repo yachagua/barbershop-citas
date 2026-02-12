@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbershop | Cortes de calidad</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <style>
+        .header {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1585747860715-2ba37e788b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+        .nav {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            color: #ffd700;
+            font-size: 1.8em;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #ffd700;
+        }
+        .hero h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .hero p {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        .about-image {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(255,215,0,0.2);
+        }
+        .servicio-icon {
+            font-size: 3em;
+            color: #ffd700;
+            margin-bottom: 20px;
+        }
+        .barbero-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .nav-links {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero h1 {
+                font-size: 2.5em;
+            }
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER / HERO -->
+    <header class="header">
+        <nav class="nav">
+            <a href="index.html" class="logo">🪒 BARBERSHOP</a>
+            <div class="nav-links">
+                <a href="index.html" class="active">Inicio</a>
+                <a href="servicios.html">Servicios</a>
+                <a href="reservas.html">Reservar</a>
+                <a href="contacto.html">Contacto</a>
+                <a href="../admin/login.html" style="color: #ffd700;">👑 Admin</a>
+            </div>
+        </nav>
+        <div class="hero">
+            <h1>ESTILO QUE HABLA POR TI</h1>
+            <p>Cortes clásicos y modernos en un ambiente único. Experiencia y calidad en cada visita.</p>
+            <div>
+                <a href="reservas.html" class="btn">📅 RESERVAR AHORA</a>
+                <a href="servicios.html" class="btn btn-outline">VER SERVICIOS</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- SOBRE NOSOTROS -->
+    <section id="nosotros" class="section">
+        <div class="container">
+            <h2 class="section-title">SOBRE NOSOTROS</h2>
+            <p class="section-subtitle">Tradición y vanguardia en cada corte</p>
+            <div class="about-content">
+                <div class="about-text">
+                    <p style="color: #ccc; line-height: 1.8; margin-bottom: 20px;">En Barbershop, combinamos la tradición clásica de las barberías con las últimas tendencias para ofrecerte una experiencia única. Nuestros barberos son expertos en su oficio y están en constante actualización.</p>
+                    <p style="color: #ccc; line-height: 1.8; margin-bottom: 20px;">Ubicados en El Poblado, Medellín, somos el punto de encuentro para quienes valoran la calidad, el detalle y el buen servicio. Más que un corte, te llevas una experiencia.</p>
+                    <p><strong style="color: #ffd700;">+5,000 clientes satisfechos</strong> nos avalan.</p>
+                </div>
+                <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Barbería" class="about-image">
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICIOS PREVIEW -->
+    <section id="servicios" class="section" style="background: rgba(255,215,0,0.02);">
+        <div class="container">
+            <h2 class="section-title">NUESTROS SERVICIOS</h2>
+            <p class="section-subtitle">Calidad premium a precios justos</p>
+            <div class="grid-3" id="servicios-preview">
+                <div class="loading">Cargando servicios...</div>
+            </div>
+            <div style="text-align: center; margin-top: 50px;">
+                <a href="servicios.html" class="btn">VER TODOS LOS SERVICIOS →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- BARBEROS -->
+    <section id="barberos" class="section">
+        <div class="container">
+            <h2 class="section-title">NUESTRO EQUIPO</h2>
+            <p class="section-subtitle">Profesionales apasionados por su oficio</p>
+            <div class="grid-4">
+                <div class="card" style="padding: 0; overflow: hidden;">
+                    <img src="https://images.unsplash.com/photo-1531427186791-5ae9ce6dfd22?ixlib=rb-4.0.3&auto=format&fit=crop&w=987&q=80" alt="Carlos" class="barbero-img">
+                    <div style="padding: 20px;">
+                        <h4 style="color: #ffd700; font-size: 1.3em; margin-bottom: 10px;">Carlos Rodríguez</h4>
+                        <p style="color: #ccc;">Especialista en degradados y cortes clásicos. 8 años de experiencia.</p>
+                    </div>
+                </div>
+                <div class="card" style="padding: 0; overflow: hidden;">
+                    <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=987&q=80" alt="Juan" class="barbero-img">
+                    <div style="padding: 20px;">
+                        <h4 style="color: #ffd700; font-size: 1.3em; margin-bottom: 10px;">Juan Martínez</h4>
+                        <p style="color: #ccc;">Experto en barbas y arreglos faciales. Campeón nacional de barbería.</p>
+                    </div>
+                </div>
+                <div class="card" style="padding: 0; overflow: hidden;">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=987&q=80" alt="Laura" class="barbero-img">
+                    <div style="padding: 20px;">
+                        <h4 style="color: #ffd700; font-size: 1.3em; margin-bottom: 10px;">Laura Gómez</h4>
+                        <p style="color: #ccc;">Cortes modernos y color. Especialista en tendencias.</p>
+                    </div>
+                </div>
+                <div class="card" style="padding: 0; overflow: hidden;">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Andrés" class="barbero-img">
+                    <div style="padding: 20px;">
+                        <h4 style="color: #ffd700; font-size: 1.3em; margin-bottom: 10px;">Andrés López</h4>
+                        <p style="color: #ccc;">Corte infantil y asesoría de imagen.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section style="background: linear-gradient(135deg, #ffd700 0%, #ccac00 100%); padding: 80px 0; text-align: center;">
+        <div class="container">
+            <h2 style="color: black; font-size: 2.5em; margin-bottom: 20px;">¿LISTO PARA TU CAMBIO DE LOOK?</h2>
+            <p style="color: #1a1a1a; font-size: 1.2em; margin-bottom: 30px;">Reserva ahora y obtén 10% de descuento en tu primer corte</p>
+            <a href="reservas.html" class="btn" style="background: black; color: #ffd700; border: 2px solid black;">RESERVAR CITA</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="background: #000; padding: 60px 0 30px;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px;">
+                <div>
+                    <h4 style="color: #ffd700; margin-bottom: 20px;">🪒 Barbershop</h4>
+                    <p style="color: #ccc;">Excelencia en cortes desde 2010</p>
+                </div>
+                <div>
+                    <h4 style="color: #ffd700; margin-bottom: 20px;">Enlaces</h4>
+                    <p><a href="index.html" style="color: #ccc; text-decoration: none;">Inicio</a></p>
+                    <p><a href="servicios.html" style="color: #ccc; text-decoration: none;">Servicios</a></p>
+                    <p><a href="reservas.html" style="color: #ccc; text-decoration: none;">Reservar</a></p>
+                    <p><a href="contacto.html" style="color: #ccc; text-decoration: none;">Contacto</a></p>
+                </div>
+                <div>
+                    <h4 style="color: #ffd700; margin-bottom: 20px;">Contacto</h4>
+                    <p style="color: #ccc;">📞 +57 300 123 4567</p>
+                    <p style="color: #ccc;">✉️ info@barbershop.com</p>
+                    <p style="color: #ccc;">📍 El Poblado, Medellín</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(255,215,0,0.2); color: #999;">
+                <p>© 2026 Barbershop. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../assets/js/api.js"></script>
+    <script>
+        async function cargarServiciosPreview() {
+            try {
+                const servicios = await serviciosAPI.getPublic();
+                const activos = servicios.filter(s => s.activo).slice(0, 3);
+                
+                const container = document.getElementById('servicios-preview');
+                container.innerHTML = activos.map(servicio => `
+                    <div class="card">
+                        <div class="servicio-icon">✂️</div>
+                        <h3 style="color: #ffd700; font-size: 1.5em; margin-bottom: 15px;">${servicio.nombre}</h3>
+                        <p style="color: #ccc; margin-bottom: 20px;">${servicio.descripcion}</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 1.5em; font-weight: bold; color: white;">$${servicio.precio.toLocaleString('es-CO')}</span>
+                            <span style="color: #999;">⏱️ ${servicio.duracion} min</span>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        cargarServiciosPreview();
+    </script>
+</body>
+</html>

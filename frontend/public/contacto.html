@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto | Barbershop</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <style>
+        .contacto-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-top: 40px;
+        }
+        .info-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,215,0,0.1);
+        }
+        .info-icon {
+            font-size: 2em;
+            color: #ffd700;
+            margin-bottom: 15px;
+        }
+        .info-title {
+            color: #ffd700;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+        .horario-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,215,0,0.1);
+        }
+        .horario-item:last-child {
+            border-bottom: none;
+        }
+        .mapa-container {
+            width: 100%;
+            height: 450px;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255,215,0,0.3);
+        }
+        .redes-sociales {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .red-social {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,215,0,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: #ffd700;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .red-social:hover {
+            background: #ffd700;
+            color: black;
+            transform: scale(1.1);
+        }
+        @media (max-width: 768px) {
+            .contacto-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header style="background: #0a0a0a; padding: 20px 0; border-bottom: 1px solid rgba(255,215,0,0.2);">
+        <div class="container">
+            <nav style="display: flex; justify-content: space-between; align-items: center;">
+                <a href="index.html" style="color: #ffd700; font-size: 1.5em; font-weight: bold; text-decoration: none;">🪒 BARBERSHOP</a>
+                <div style="display: flex; gap: 30px;">
+                    <a href="index.html" style="color: white; text-decoration: none;">Inicio</a>
+                    <a href="servicios.html" style="color: white; text-decoration: none;">Servicios</a>
+                    <a href="reservas.html" style="color: white; text-decoration: none;">Reservar</a>
+                    <a href="contacto.html" style="color: #ffd700; text-decoration: none;">Contacto</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            <h1 class="section-title">📍 CONTACTO</h1>
+            <p class="section-subtitle">Estamos ubicados en El Poblado, Medellín</p>
+
+            <div class="contacto-grid">
+                <!-- COLUMNA IZQUIERDA: Información -->
+                <div>
+                    <div class="info-card">
+                        <div class="info-icon">📍</div>
+                        <h3 class="info-title">Dirección</h3>
+                        <p style="color: #ccc; font-size: 1.1em;">Carrera 44 # 18a-86</p>
+                        <p style="color: #999;">El Poblado, Medellín, Colombia</p>
+                        <p style="color: #ffd700; margin-top: 10px;">⬇️ Cómo llegar</p>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">📞</div>
+                        <h3 class="info-title">Teléfonos</h3>
+                        <p style="color: #ccc; font-size: 1.1em;">+57 300 123 4567</p>
+                        <p style="color: #ccc;">+57 604 987 6543</p>
+                        <p style="color: #ffd700; margin-top: 10px;">Disponibles en horario laboral</p>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">✉️</div>
+                        <h3 class="info-title">Email</h3>
+                        <p style="color: #ccc; font-size: 1.1em;">info@barbershop.com</p>
+                        <p style="color: #ccc;">reservas@barbershop.com</p>
+                        <p style="color: #ffd700; margin-top: 10px;">Respuesta en máximo 2 horas</p>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">⏰</div>
+                        <h3 class="info-title">Horarios</h3>
+                        <div class="horario-item">
+                            <span style="color: #ccc;">Lunes - Viernes</span>
+                            <span style="color: #ffd700;">7:00 am - 9:15 pm</span>
+                        </div>
+                        <div class="horario-item">
+                            <span style="color: #ccc;">Sábado</span>
+                            <span style="color: #ffd700;">7:00 am - 9:15 pm</span>
+                        </div>
+                        <div class="horario-item">
+                            <span style="color: #ccc;">Domingo</span>
+                            <span style="color: #ffd700;">10:00 am - 4:00 pm</span>
+                        </div>
+                        <p style="color: #999; margin-top: 15px;">🕒 Atendemos sin cita, pero recomendamos reservar</p>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">🌐</div>
+                        <h3 class="info-title">Redes Sociales</h3>
+                        <div class="redes-sociales">
+                            <a href="#" class="red-social">📘</a>
+                            <a href="#" class="red-social">📷</a>
+                            <a href="#" class="red-social">🐦</a>
+                            <a href="#" class="red-social">📌</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLUMNA DERECHA: Mapa y formulario -->
+                <div>
+                    <div class="mapa-container">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260259284!2d-75.580690685681!3d6.207452995494!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e4429b3b3b3b3b3%3A0x1e3b3b3b3b3b3b3b!2sEl%20Poblado%2C%20Medell%C3%ADn!5e0!3m2!1ses!2sco!4v1620000000000!5m2!1ses!2sco"
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy">
+                        </iframe>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.05); border-radius: 15px; padding: 30px; margin-top: 30px;">
+                        <h3 style="color: #ffd700; margin-bottom: 20px; font-size: 1.5em;">📧 Escríbenos</h3>
+                        <form id="contact-form">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                                <input type="text" placeholder="Nombre completo" style="width: 100%; padding: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,215,0,0.3); border-radius: 5px; color: white;">
+                                <input type="email" placeholder="Email" style="width: 100%; padding: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,215,0,0.3); border-radius: 5px; color: white;">
+                            </div>
+                            <input type="text" placeholder="Asunto" style="width: 100%; padding: 12px; margin-bottom: 20px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,215,0,0.3); border-radius: 5px; color: white;">
+                            <textarea rows="5" placeholder="Tu mensaje" style="width: 100%; padding: 12px; margin-bottom: 20px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,215,0,0.3); border-radius: 5px; color: white;"></textarea>
+                            <button type="submit" class="btn" style="width: 100%;">ENVIAR MENSAJE</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="background: #000; padding: 60px 0 30px; margin-top: 80px;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px;">
+                <div>
+                    <h4 style="color: #ffd700; margin-bottom: 20px;">🪒 Barbershop</h4>
+                    <p style="color: #ccc;">Excelencia en cortes desde 2010</p>
+                </div>
+                <div>
+                    <h4 style="color: #ffd700; margin-bottom: 20px;">Enlaces</h4>
+                    <p><a href="index.html" style="color: #ccc; text-decoration: none;">Inicio</a></p>
+                    <p><a href="servicios.html" style="color: #ccc; text-decoration: none;">Servicios</a></p>
+                    <p><a href="reservas.html" style="color: #ccc; text-decoration: none;">Reservar</a></p>
+                    <p><a href="contacto.html" style="color: #ffd700; text-decoration: none;">Contacto</a></p>
+                </div>
+                <div>
+                    <h4 style="color: #ffd700; margin-bottom: 20px;">Contacto</h4>
+                    <p style="color: #ccc;">📞 +57 300 123 4567</p>
+                    <p style="color: #ccc;">✉️ info@barbershop.com</p>
+                    <p style="color: #ccc;">📍 El Poblado, Medellín</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(255,215,0,0.2); color: #999;">
+                <p>© 2026 Barbershop. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('contact-form')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('✅ Mensaje enviado. Te contactaremos pronto.');
+            e.target.reset();
+        });
+    </script>
+</body>
+</html>

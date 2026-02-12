@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservar Cita | Barbershop</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <style>
+        .reserva-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-top: 40px;
+        }
+        .servicio-seleccionado {
+            background: rgba(255,215,0,0.1);
+            border: 1px solid #ffd700;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .form-reserva {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ffd700;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,215,0,0.3);
+            border-radius: 5px;
+            color: white;
+            font-size: 1em;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+        option {
+            background: #1a1a1a;
+            color: white;
+        }
+        .horas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .hora-btn {
+            padding: 12px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,215,0,0.3);
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        .hora-btn:hover {
+            background: rgba(255,215,0,0.2);
+            border-color: #ffd700;
+        }
+        .hora-btn.seleccionada {
+            background: #ffd700;
+            color: black;
+            font-weight: bold;
+        }
+        .hora-btn.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .resumen {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .precio-total {
+            font-size: 1.8em;
+            color: #ffd700;
+            font-weight: bold;
+        }
+        @media (max-width: 768px) {
+            .reserva-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header style="background: #0a0a0a; padding: 20px 0; border-bottom: 1px solid rgba(255,215,0,0.2);">
+        <div class="container">
+            <nav style="display: flex; justify-content: space-between; align-items: center;">
+                <a href="index.html" style="color: #ffd700; font-size: 1.5em; font-weight: bold; text-decoration: none;">🪒 BARBERSHOP</a>
+                <div style="display: flex; gap: 30px;">
+                    <a href="index.html" style="color: white; text-decoration: none;">Inicio</a>
+                    <a href="servicios.html" style="color: white; text-decoration: none;">Servicios</a>
+                    <a href="reservas.html" style="color: #ffd700; text-decoration: none;">Reservar</a>
+                    <a href="contacto.html" style="color: white; text-decoration: none;">Contacto</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            <h1 class="section-title">📅 RESERVA TU CITA</h1>
+            <p class="section-subtitle">Elige el servicio, fecha y hora que prefieras</p>
+
+            <div class="reserva-container">
+                <!-- COLUMNA IZQUIERDA: Selección de servicio -->
+                <div>
+                    <div class="servicio-seleccionado" id="servicio-seleccionado" style="display: none;">
+                        <h3 style="color: #ffd700; margin-bottom: 15px;">✂️ SERVICIO SELECCIONADO</h3>
+                        <div id="servicio-info"></div>
+                        <button onclick="cambiarServicio()" style="margin-top: 15px; padding: 10px; background: transparent; border: 1px solid #ffd700; color: #ffd700; border-radius: 5px; cursor: pointer;">
+                            Cambiar servicio
+                        </button>
+                    </div>
+
+                    <div id="selector-servicios">
+                        <h3 style="color: #ffd700; margin-bottom: 20px;">1. SELECCIONA UN SERVICIO</h3>
+                        <div id="servicios-container" class="grid-3"></div>
+                    </div>
+                </div>
+
+                <!-- COLUMNA DERECHA: Formulario y horarios -->
+                <div>
+                    <div class="form-reserva" id="formulario-reserva" style="display: none;">
+                        <h3 style="color: #ffd700; margin-bottom: 20px;">2. FECHA Y HORA</h3>
+                        
+                        <div class="form-group">
+                            <label>📅 Fecha</label>
+                            <input type="date" id="fecha" onchange="cargarHorarios()" min="">
+                        </div>
+
+                        <div class="form-group">
+                            <label>⏰ Hora disponible</label>
+                            <div id="horas-container" class="horas-grid">
+                                <p style="color: #999;">Selecciona una fecha primero</p>
+                            </div>
+                        </div>
+
+                        <h3 style="color: #ffd700; margin: 30px 0 20px;">3. TUS DATOS</h3>
+                        
+                        <div class="form-group">
+                            <label>👤 Nombre completo</label>
+                            <input type="text" id="nombre" placeholder="Ej: Juan Pérez">
+                        </div>
+
+                        <div class="form-group">
+                            <label>📱 Teléfono</label>
+                            <input type="tel" id="telefono" placeholder="3001234567">
+                        </div>
+
+                        <div class="form-group">
+                            <label>✉️ Email</label>
+                            <input type="email" id="email" placeholder="correo@ejemplo.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label>📝 Notas adicionales</label>
+                            <textarea id="notas" rows="3" placeholder="¿Alguna preferencia especial?"></textarea>
+                        </div>
+
+                        <div class="resumen" id="resumen">
+                            <!-- Se llena dinámicamente -->
+                        </div>
+
+                        <button onclick="crearReserva()" class="btn" style="width: 100%; margin-top: 20px;">
+                            ✅ CONFIRMAR RESERVA
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="background: #000; padding: 60px 0 30px; margin-top: 80px;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px;">
+                <div>
+                    <h4 style="color: #ffd700; margin-bottom: 20px;">🪒 Barbershop</h4>
+                    <p style="color: #ccc;">Excelencia en cortes desde 2010</p>
+                </div>
+                <div>
+                    <h4 style="color: #ffd700; margin-bottom: 20px;">Enlaces</h4>
+                    <p><a href="index.html" style="color: #ccc; text-decoration: none;">Inicio</a></p>
+                    <p><a href="servicios.html" style="color: #ccc; text-decoration: none;">Servicios</a></p>
+                    <p><a href="reservas.html" style="color: #ffd700; text-decoration: none;">Reservar</a></p>
+                </div>
+                <div>
+                    <h4 style="color: #ffd700; margin-bottom: 20px;">Contacto</h4>
+                    <p style="color: #ccc;">📞 +57 300 123 4567</p>
+                    <p style="color: #ccc;">✉️ info@barbershop.com</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../assets/js/api.js"></script>
+    <script>
+        let servicioSeleccionado = null;
+        let horaSeleccionada = null;
+        let serviciosDisponibles = [];
+
+        // Obtener ID del servicio de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const servicioId = urlParams.get('servicio');
+
+        // Cargar servicios
+        async function cargarServicios() {
+            try {
+                serviciosDisponibles = await serviciosAPI.getPublic();
+                const activos = serviciosDisponibles.filter(s => s.activo);
+                
+                const container = document.getElementById('servicios-container');
+                container.innerHTML = activos.map(servicio => `
+                    <div class="card" style="cursor: pointer;" onclick="seleccionarServicio(${servicio.id})">
+                        <h3 style="color: #ffd700;">${servicio.nombre}</h3>
+                        <p style="color: #ccc; margin: 10px 0;">${servicio.descripcion}</p>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: white; font-weight: bold;">$${servicio.precio.toLocaleString('es-CO')}</span>
+                            <span style="color: #999;">⏱️ ${servicio.duracion} min</span>
+                        </div>
+                    </div>
+                `).join('');
+
+                // Si hay servicioId en URL, seleccionarlo automáticamente
+                if (servicioId) {
+                    const servicio = activos.find(s => s.id == servicioId);
+                    if (servicio) seleccionarServicio(servicio.id);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Seleccionar servicio
+        function seleccionarServicio(id) {
+            servicioSeleccionado = serviciosDisponibles.find(s => s.id == id);
+            
+            // Mostrar servicio seleccionado
+            const selectorDiv = document.getElementById('selector-servicios');
+            const seleccionadoDiv = document.getElementById('servicio-seleccionado');
+            const servicioInfo = document.getElementById('servicio-info');
+            
+            selectorDiv.style.display = 'none';
+            seleccionadoDiv.style.display = 'block';
+            
+            servicioInfo.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h4 style="color: white; font-size: 1.2em;">${servicioSeleccionado.nombre}</h4>
+                        <p style="color: #ccc;">${servicioSeleccionado.descripcion}</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="font-size: 1.5em; color: #ffd700; font-weight: bold;">$${servicioSeleccionado.precio.toLocaleString('es-CO')}</span>
+                        <span style="display: block; color: #999;">⏱️ ${servicioSeleccionado.duracion} min</span>
+                    </div>
+                </div>
+            `;
+            
+            // Mostrar formulario
+            document.getElementById('formulario-reserva').style.display = 'block';
+            
+            // Setear fecha mínima
+            const fechaInput = document.getElementById('fecha');
+            const hoy = new Date().toISOString().split('T')[0];
+            fechaInput.min = hoy;
+            fechaInput.value = hoy;
+            
+            // Cargar horarios
+            cargarHorarios();
+            
+            // Actualizar resumen
+            actualizarResumen();
+        }
+
+        // Cambiar servicio
+        function cambiarServicio() {
+            servicioSeleccionado = null;
+            horaSeleccionada = null;
+            document.getElementById('selector-servicios').style.display = 'block';
+            document.getElementById('servicio-seleccionado').style.display = 'none';
+            document.getElementById('formulario-reserva').style.display = 'none';
+        }
+
+        // Cargar horarios disponibles
+        async function cargarHorarios() {
+            const fecha = document.getElementById('fecha').value;
+            if (!fecha) return;
+            
+            try {
+                const data = await disponibilidadAPI.get(fecha);
+                const container = document.getElementById('horas-container');
+                
+                if (data.disponibles.length === 0) {
+                    container.innerHTML = '<p style="color: #ff6b6b;">❌ No hay horarios disponibles para esta fecha</p>';
+                    return;
+                }
+                
+                container.innerHTML = data.disponibles.map(hora => `
+                    <div class="hora-btn ${horaSeleccionada === hora ? 'seleccionada' : ''}" 
+                         onclick="seleccionarHora('${hora}')">
+                        ${hora}
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Seleccionar hora
+        function seleccionarHora(hora) {
+            horaSeleccionada = hora;
+            cargarHorarios(); // Recargar para mostrar selección
+            actualizarResumen();
+        }
+
+        // Actualizar resumen
+        function actualizarResumen() {
+            if (!servicioSeleccionado) return;
+            
+            const fecha = document.getElementById('fecha').value;
+            const hora = horaSeleccionada;
+            
+            let html = '<h4 style="color: #ffd700; margin-bottom: 15px;">📋 RESUMEN</h4>';
+            
+            html += `<p><strong>Servicio:</strong> ${servicioSeleccionado.nombre}</p>`;
+            html += `<p><strong>Precio:</strong> $${servicioSeleccionado.precio.toLocaleString('es-CO')}</p>`;
+            
+            if (fecha) html += `<p><strong>Fecha:</strong> ${new Date(fecha).toLocaleDateString('es-ES')}</p>`;
+            if (hora) html += `<p><strong>Hora:</strong> ${hora}</p>`;
+            
+            html += `<p style="margin-top: 15px;"><strong>Total a pagar:</strong> <span class="precio-total">$${servicioSeleccionado.precio.toLocaleString('es-CO')}</span></p>`;
+            
+            document.getElementById('resumen').innerHTML = html;
+        }
+
+        // Crear reserva
+        async function crearReserva() {
+            if (!servicioSeleccionado) {
+                alert('Selecciona un servicio');
+                return;
+            }
+            
+            if (!horaSeleccionada) {
+                alert('Selecciona una hora');
+                return;
+            }
+            
+            const reserva = {
+                servicio_id: servicioSeleccionado.id,
+                fecha: document.getElementById('fecha').value,
+                hora: horaSeleccionada,
+                nombre: document.getElementById('nombre').value,
+                telefono: document.getElementById('telefono').value,
+                email: document.getElementById('email').value,
+                notas: document.getElementById('notas').value
+            };
+            
+            if (!reserva.nombre || !reserva.telefono || !reserva.email) {
+                alert('Completa todos los datos personales');
+                return;
+            }
+            
+            try {
+                const response = await citasAPI.create(reserva);
+                alert('✅ ¡Cita reservada exitosamente!');
+                window.location.href = `confirmacion.html?id=${response.id}`;
+            } catch (error) {
+                alert('❌ Error al reservar. Intenta de nuevo.');
+            }
+        }
+
+        // Event listeners
+        document.getElementById('fecha').addEventListener('change', actualizarResumen);
+        
+        // Inicializar
+        cargarServicios();
+    </script>
+</body>
+</html>

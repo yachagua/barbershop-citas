@@ -3,95 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barbershop - Admin Servicios</title>
+    <title>Admin - Servicios | Barbershop</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
-        body {
-            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
-            color: white;
-            padding: 20px;
-        }
-        .container {
-            max-width: 1200px;
+        .admin-container {
+            padding: 40px 20px;
+            max-width: 1400px;
             margin: 0 auto;
         }
-        .header {
+        .admin-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
             margin-bottom: 30px;
         }
-        h1 {
-            color: #ffd700;
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(0,0,0,0.3));
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255,215,0,0.2);
         }
-        .btn {
-            padding: 12px 25px;
-            background: #ffd700;
-            color: black;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
+        .stat-number {
+            font-size: 2.5em;
             font-weight: bold;
-            transition: all 0.3s;
+            color: #ffd700;
+            margin-bottom: 5px;
         }
-        .btn:hover {
-            background: #ffed4a;
-            transform: scale(1.05);
-        }
-        .btn-danger {
-            background: rgba(255,0,0,0.8);
-            color: white;
-        }
-        .btn-danger:hover {
-            background: #ff0000;
-        }
-        .btn-success {
-            background: #28a745;
-            color: white;
+        .stat-label {
+            color: #ccc;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
         .servicios-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
             margin-top: 30px;
         }
         .servicio-card {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
             border-radius: 15px;
-            padding: 20px;
-            border: 1px solid rgba(255,215,0,0.3);
+            overflow: hidden;
+            border: 1px solid rgba(255,215,0,0.1);
+            transition: all 0.3s;
             position: relative;
         }
-        .servicio-img {
+        .servicio-card:hover {
+            transform: translateY(-5px);
+            border-color: #ffd700;
+            box-shadow: 0 10px 30px rgba(255,215,0,0.2);
+        }
+        .servicio-imagen {
             width: 100%;
             height: 200px;
             object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 15px;
+            background: #1a1a1a;
+        }
+        .servicio-info {
+            padding: 20px;
         }
         .servicio-nombre {
-            font-size: 1.3em;
             color: #ffd700;
+            font-size: 1.3em;
+            font-weight: bold;
             margin-bottom: 10px;
         }
+        .servicio-descripcion {
+            color: #ccc;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        .servicio-detalles {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,215,0,0.1);
+        }
         .servicio-precio {
-            font-size: 1.2em;
+            font-size: 1.5em;
             font-weight: bold;
-            margin-bottom: 5px;
+            color: white;
         }
         .servicio-duracion {
             color: #999;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .servicio-estado {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
             margin-bottom: 15px;
+        }
+        .estado-activo {
+            background: rgba(0,255,0,0.2);
+            color: #00ff00;
+        }
+        .estado-inactivo {
+            background: rgba(255,0,0,0.2);
+            color: #ff0000;
         }
         .acciones {
             display: flex;
             gap: 10px;
             margin-top: 15px;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: bold;
+            transition: all 0.3s;
+            flex: 1;
+            text-decoration: none;
+            text-align: center;
+        }
+        .btn-editar {
+            background: rgba(255,215,0,0.2);
+            color: #ffd700;
+            border: 1px solid #ffd700;
+        }
+        .btn-editar:hover {
+            background: #ffd700;
+            color: black;
+        }
+        .btn-activar {
+            background: rgba(0,255,0,0.2);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+        }
+        .btn-activar:hover {
+            background: rgba(0,255,0,0.4);
+        }
+        .btn-desactivar {
+            background: rgba(255,0,0,0.2);
+            color: #ff0000;
+            border: 1px solid #ff0000;
+        }
+        .btn-desactivar:hover {
+            background: rgba(255,0,0,0.4);
+        }
+        .btn-nuevo {
+            background: #ffd700;
+            color: black;
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+        .btn-nuevo:hover {
+            background: #ffed4a;
+            transform: scale(1.05);
         }
         .modal {
             display: none;
@@ -100,94 +182,137 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.9);
             justify-content: center;
             align-items: center;
             z-index: 1000;
         }
         .modal-content {
             background: #1a1a1a;
-            padding: 30px;
+            padding: 40px;
             border-radius: 20px;
             border: 1px solid #ffd700;
             width: 90%;
-            max-width: 500px;
+            max-width: 600px;
             max-height: 90vh;
             overflow-y: auto;
         }
         .form-group {
             margin-bottom: 20px;
         }
-        label {
+        .form-group label {
             display: block;
-            margin-bottom: 8px;
             color: #ffd700;
+            margin-bottom: 8px;
+            font-weight: bold;
         }
-        input, textarea, select {
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
             width: 100%;
-            padding: 10px;
-            border: none;
+            padding: 12px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,215,0,0.3);
             border-radius: 5px;
-            background: rgba(255,255,255,0.9);
-        }
-        .notificacion {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(0,0,0,0.95);
-            border-left: 5px solid #ffd700;
             color: white;
-            padding: 20px;
+            font-size: 1em;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+        .preview-imagen {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
             border-radius: 10px;
-            transform: translateX(400px);
-            transition: transform 0.5s ease;
-            z-index: 2000;
+            margin-top: 10px;
+            border: 1px solid rgba(255,215,0,0.3);
         }
-        .notificacion.mostrar {
-            transform: translateX(0);
-        }
-        .notificacion.exito { border-left-color: #00ff00; }
-        .notificacion.error { border-left-color: #ff0000; }
         .loading {
             text-align: center;
-            padding: 40px;
+            padding: 60px;
+            color: #ffd700;
+            font-size: 1.2em;
+        }
+        .sin-servicios {
+            text-align: center;
+            padding: 60px;
+            color: #999;
+            grid-column: 1/-1;
+        }
+        .refresh-btn {
+            background: rgba(255,215,0,0.1);
+            color: #ffd700;
+            border: 1px solid #ffd700;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .refresh-btn:hover {
+            background: #ffd700;
+            color: black;
         }
     </style>
 </head>
-<body>
-    <div id="notificacion" class="notificacion">
-        <div id="notificacion-titulo" style="font-weight:bold; margin-bottom:5px;"></div>
-        <div id="notificacion-contenido"></div>
-    </div>
-
-    <div class="container">
-        <div class="header">
-            <h1>🛠️ GESTIÓN DE SERVICIOS</h1>
+<body style="background: #0a0a0a;">
+    <div class="admin-container">
+        <!-- HEADER ADMIN -->
+        <div class="admin-header">
             <div>
-                <button class="btn" onclick="abrirModal()">+ NUEVO SERVICIO</button>
-                <button class="btn btn-danger" onclick="logout()" style="margin-left: 10px;">CERRAR SESIÓN</button>
+                <h1 style="color: #ffd700; font-size: 2em;">✂️ GESTIÓN DE SERVICIOS</h1>
+                <p style="color: #ccc;">Administra los servicios, precios e imágenes</p>
+            </div>
+            <div style="display: flex; gap: 15px;">
+                <button onclick="cargarServicios()" class="refresh-btn">🔄 ACTUALIZAR</button>
+                <a href="citas.html" style="background: #ffd700; color: black; padding: 10px 20px; border-radius: 5px; text-decoration: none;">📅 CITAS</a>
+                <button onclick="abrirModal()" class="btn-nuevo">+ NUEVO SERVICIO</button>
+                <button onclick="logout()" style="background: rgba(255,0,0,0.2); color: #ff0000; border: 1px solid #ff0000; padding: 10px 20px; border-radius: 5px; cursor: pointer;">🔒 SALIR</button>
             </div>
         </div>
 
-        <!-- Lista de servicios -->
+        <!-- ESTADÍSTICAS -->
+        <div class="stats-grid" id="stats-container">
+            <div class="stat-card">
+                <div class="stat-number" id="total-servicios">0</div>
+                <div class="stat-label">Total Servicios</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="activos">0</div>
+                <div class="stat-label">Activos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="inactivos">0</div>
+                <div class="stat-label">Inactivos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="precio-promedio">$0</div>
+                <div class="stat-label">Precio Promedio</div>
+            </div>
+        </div>
+
+        <!-- LISTA DE SERVICIOS -->
         <div id="servicios-container" class="servicios-grid">
             <div class="loading">Cargando servicios...</div>
         </div>
     </div>
 
-    <!-- Modal para crear/editar servicio -->
+    <!-- MODAL PARA CREAR/EDITAR SERVICIO -->
     <div id="modal" class="modal">
         <div class="modal-content">
-            <h2 style="color:#ffd700; margin-bottom:20px;" id="modal-titulo">Nuevo Servicio</h2>
+            <h2 style="color: #ffd700; margin-bottom: 30px; font-size: 1.8em;" id="modal-titulo">Nuevo Servicio</h2>
             
             <div class="form-group">
-                <label>📌 Nombre</label>
-                <input type="text" id="nombre" placeholder="Ej: Corte de cabello">
+                <label>📌 Nombre del servicio</label>
+                <input type="text" id="nombre" placeholder="Ej: Corte de cabello premium">
             </div>
             
             <div class="form-group">
                 <label>📝 Descripción</label>
-                <textarea id="descripcion" rows="3" placeholder="Descripción del servicio"></textarea>
+                <textarea id="descripcion" rows="3" placeholder="Describe el servicio en detalle..."></textarea>
             </div>
             
             <div class="form-group">
@@ -197,27 +322,32 @@
             
             <div class="form-group">
                 <label>💰 Precio ($)</label>
-                <input type="number" id="precio" placeholder="15000">
+                <input type="number" id="precio" placeholder="25000">
             </div>
             
             <div class="form-group">
-                <label>🖼️ Imagen</label>
-                <input type="file" id="imagen" accept="image/*">
-                <div id="imagen-actual" style="margin-top:10px; display:none;">
-                    <img id="preview-imagen" style="width:100px; height:100px; object-fit:cover; border-radius:5px;">
+                <label>🖼️ Imagen del servicio</label>
+                <input type="file" id="imagen" accept="image/*" onchange="previewFile()">
+                <div id="preview-container" style="margin-top: 15px; display: none;">
+                    <img id="preview" class="preview-imagen">
                 </div>
             </div>
             
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <button class="btn" id="btn-guardar" onclick="guardarServicio()">GUARDAR</button>
-                <button class="btn btn-danger" onclick="cerrarModal()">CANCELAR</button>
+            <div style="display: flex; gap: 15px; margin-top: 30px;">
+                <button onclick="guardarServicio()" style="flex: 2; padding: 15px; background: #ffd700; color: black; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 1.1em;">
+                    💾 GUARDAR SERVICIO
+                </button>
+                <button onclick="cerrarModal()" style="flex: 1; padding: 15px; background: rgba(255,0,0,0.2); color: #ff0000; border: 1px solid #ff0000; border-radius: 5px; font-weight: bold; cursor: pointer;">
+                    CANCELAR
+                </button>
             </div>
         </div>
     </div>
 
+    <script src="../assets/js/api.js"></script>
     <script>
-        const API_URL = 'http://127.0.0.1:8000';
         let servicioEditando = null;
+        let todosServicios = [];
 
         // Verificar autenticación
         const token = localStorage.getItem('token');
@@ -235,44 +365,91 @@
         // Cargar servicios
         async function cargarServicios() {
             try {
-                const response = await fetch(`${API_URL}/admin/servicios/`, {
+                const response = await fetch(`${API_CONFIG.baseURL}/admin/servicios/`, {
                     headers: getHeaders()
                 });
-                const servicios = await response.json();
+                todosServicios = await response.json();
                 
-                const container = document.getElementById('servicios-container');
+                // Actualizar estadísticas
+                actualizarEstadisticas();
                 
-                if (servicios.length === 0) {
-                    container.innerHTML = '<div style="grid-column:1/-1; text-align:center;">No hay servicios creados</div>';
-                    return;
-                }
-                
-                container.innerHTML = servicios.map(servicio => `
-                    <div class="servicio-card">
-                        ${servicio.imagen_url ? 
-                            `<img class="servicio-img" src="${API_URL}${servicio.imagen_url}" onerror="this.src='https://via.placeholder.com/300x200?text=Sin+imagen'">` : 
-                            `<div style="width:100%; height:200px; background:#333; display:flex; align-items:center; justify-content:center; border-radius:10px; margin-bottom:15px;">
-                                🖼️ Sin imagen
-                            </div>`
-                        }
+                // Mostrar servicios
+                mostrarServicios();
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('servicios-container').innerHTML = `
+                    <div class="sin-servicios">
+                        ❌ Error al cargar los servicios. Verifica tu conexión.
+                    </div>
+                `;
+            }
+        }
+
+        // Actualizar estadísticas
+        function actualizarEstadisticas() {
+            const total = todosServicios.length;
+            const activos = todosServicios.filter(s => s.activo).length;
+            const inactivos = total - activos;
+            
+            let sumaPrecios = 0;
+            todosServicios.forEach(s => sumaPrecios += s.precio);
+            const promedio = total > 0 ? Math.round(sumaPrecios / total) : 0;
+
+            document.getElementById('total-servicios').textContent = total;
+            document.getElementById('activos').textContent = activos;
+            document.getElementById('inactivos').textContent = inactivos;
+            document.getElementById('precio-promedio').textContent = `$${promedio.toLocaleString('es-CO')}`;
+        }
+
+        // Mostrar servicios
+        function mostrarServicios() {
+            const container = document.getElementById('servicios-container');
+            
+            if (todosServicios.length === 0) {
+                container.innerHTML = `
+                    <div class="sin-servicios">
+                        📭 No hay servicios creados todavía
+                        <br><br>
+                        <button onclick="abrirModal()" style="background: #ffd700; color: black; padding: 15px 30px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
+                            + CREAR PRIMER SERVICIO
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = todosServicios.map(servicio => `
+                <div class="servicio-card">
+                    ${servicio.imagen_url 
+                        ? `<img class="servicio-imagen" src="${API_CONFIG.baseURL}${servicio.imagen_url}" alt="${servicio.nombre}" onerror="this.src='https://via.placeholder.com/300x200?text=Barbershop'">`
+                        : `<div class="servicio-imagen" style="display: flex; align-items: center; justify-content: center; background: #1a1a1a; color: #666;">
+                            🖼️ Sin imagen
+                        </div>`
+                    }
+                    <div class="servicio-info">
+                        <span class="servicio-estado ${servicio.activo ? 'estado-activo' : 'estado-inactivo'}">
+                            ${servicio.activo ? '✓ ACTIVO' : '✗ INACTIVO'}
+                        </span>
                         <div class="servicio-nombre">${servicio.nombre}</div>
-                        <div style="color:#ccc; margin-bottom:10px;">${servicio.descripcion}</div>
-                        <div class="servicio-precio">$${servicio.precio.toLocaleString('es-CO')}</div>
-                        <div class="servicio-duracion">⏱️ ${servicio.duracion} minutos</div>
-                        <div style="color:#ffd700; font-size:0.9em; margin-bottom:10px;">
-                            ${servicio.activo ? '✅ Activo' : '❌ Inactivo'}
+                        <div class="servicio-descripcion">${servicio.descripcion}</div>
+                        <div class="servicio-detalles">
+                            <span class="servicio-precio">$${servicio.precio.toLocaleString('es-CO')}</span>
+                            <span class="servicio-duracion">
+                                ⏱️ ${servicio.duracion} min
+                            </span>
                         </div>
                         <div class="acciones">
-                            <button class="btn" style="flex:1;" onclick="editarServicio(${servicio.id})">✏️ Editar</button>
-                            <button class="btn btn-danger" style="flex:1;" onclick="toggleActivo(${servicio.id}, ${servicio.activo})">
-                                ${servicio.activo ? '🗑️ Desactivar' : '✅ Activar'}
+                            <button onclick="editarServicio(${servicio.id})" class="btn btn-editar">
+                                ✏️ EDITAR
+                            </button>
+                            <button onclick="toggleActivo(${servicio.id}, ${servicio.activo})" 
+                                    class="btn ${servicio.activo ? 'btn-desactivar' : 'btn-activar'}">
+                                ${servicio.activo ? '🗑️ DESACTIVAR' : '✅ ACTIVAR'}
                             </button>
                         </div>
                     </div>
-                `).join('');
-            } catch (error) {
-                mostrarNotificacion('❌ Error', 'No se pudieron cargar los servicios', 'error');
-            }
+                </div>
+            `).join('');
         }
 
         // Abrir modal para nuevo servicio
@@ -284,37 +461,48 @@
             document.getElementById('duracion').value = '';
             document.getElementById('precio').value = '';
             document.getElementById('imagen').value = '';
-            document.getElementById('imagen-actual').style.display = 'none';
+            document.getElementById('preview-container').style.display = 'none';
             document.getElementById('modal').style.display = 'flex';
         }
 
         // Editar servicio
         async function editarServicio(id) {
-            try {
-                const response = await fetch(`${API_URL}/admin/servicios/`, {
-                    headers: getHeaders()
-                });
-                const servicios = await response.json();
-                servicioEditando = servicios.find(s => s.id === id);
-                
-                document.getElementById('modal-titulo').textContent = 'Editar Servicio';
-                document.getElementById('nombre').value = servicioEditando.nombre;
-                document.getElementById('descripcion').value = servicioEditando.descripcion;
-                document.getElementById('duracion').value = servicioEditando.duracion;
-                document.getElementById('precio').value = servicioEditando.precio;
-                
-                if (servicioEditando.imagen_url) {
-                    document.getElementById('imagen-actual').style.display = 'block';
-                    document.getElementById('preview-imagen').src = `${API_URL}${servicioEditando.imagen_url}`;
+            servicioEditando = todosServicios.find(s => s.id === id);
+            
+            document.getElementById('modal-titulo').textContent = 'Editar Servicio';
+            document.getElementById('nombre').value = servicioEditando.nombre;
+            document.getElementById('descripcion').value = servicioEditando.descripcion;
+            document.getElementById('duracion').value = servicioEditando.duracion;
+            document.getElementById('precio').value = servicioEditando.precio;
+            document.getElementById('imagen').value = '';
+            
+            if (servicioEditando.imagen_url) {
+                document.getElementById('preview-container').style.display = 'block';
+                document.getElementById('preview').src = `${API_CONFIG.baseURL}${servicioEditando.imagen_url}`;
+            } else {
+                document.getElementById('preview-container').style.display = 'none';
+            }
+            
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        // Preview de imagen
+        function previewFile() {
+            const file = document.getElementById('imagen').files[0];
+            const preview = document.getElementById('preview');
+            const previewContainer = document.getElementById('preview-container');
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    previewContainer.style.display = 'block';
                 }
-                
-                document.getElementById('modal').style.display = 'flex';
-            } catch (error) {
-                mostrarNotificacion('❌ Error', 'No se pudo cargar el servicio', 'error');
+                reader.readAsDataURL(file);
             }
         }
 
-        // Guardar servicio (crear o actualizar)
+        // Guardar servicio
         async function guardarServicio() {
             const formData = new FormData();
             formData.append('nombre', document.getElementById('nombre').value);
@@ -331,75 +519,91 @@
                 let response;
                 if (servicioEditando) {
                     // Actualizar
-                    response = await fetch(`${API_URL}/admin/servicios/${servicioEditando.id}`, {
+                    response = await fetch(`${API_CONFIG.baseURL}/admin/servicios/${servicioEditando.id}`, {
                         method: 'PUT',
-                        headers: getHeaders(),
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        },
                         body: formData
                     });
                 } else {
                     // Crear
-                    response = await fetch(`${API_URL}/admin/servicios/`, {
+                    response = await fetch(`${API_CONFIG.baseURL}/admin/servicios/`, {
                         method: 'POST',
-                        headers: getHeaders(),
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        },
                         body: formData
                     });
                 }
 
                 if (response.ok) {
-                    mostrarNotificacion('✅ Éxito', `Servicio ${servicioEditando ? 'actualizado' : 'creado'} correctamente`, 'exito');
+                    alert(`✅ Servicio ${servicioEditando ? 'actualizado' : 'creado'} exitosamente`);
                     cerrarModal();
                     cargarServicios();
                 } else {
-                    mostrarNotificacion('❌ Error', 'No se pudo guardar el servicio', 'error');
+                    alert('❌ Error al guardar el servicio');
                 }
             } catch (error) {
-                mostrarNotificacion('❌ Error', 'Error de conexión', 'error');
+                console.error('Error:', error);
+                alert('❌ Error de conexión');
             }
         }
 
         // Activar/Desactivar servicio
         async function toggleActivo(id, estadoActual) {
+            if (!confirm(`¿Estás seguro de ${estadoActual ? 'desactivar' : 'activar'} este servicio?`)) return;
+            
             const formData = new FormData();
             formData.append('activo', !estadoActual);
             
             try {
-                const response = await fetch(`${API_URL}/admin/servicios/${id}`, {
+                const response = await fetch(`${API_CONFIG.baseURL}/admin/servicios/${id}`, {
                     method: 'PUT',
-                    headers: getHeaders(),
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
                     body: formData
                 });
 
                 if (response.ok) {
-                    mostrarNotificacion('✅ Éxito', `Servicio ${!estadoActual ? 'activado' : 'desactivado'}`, 'exito');
+                    alert(`✅ Servicio ${!estadoActual ? 'activado' : 'desactivado'} exitosamente`);
                     cargarServicios();
                 }
             } catch (error) {
-                mostrarNotificacion('❌ Error', 'Error al cambiar estado', 'error');
+                console.error('Error:', error);
+                alert('❌ Error al cambiar estado');
             }
         }
 
+        // Cerrar modal
         function cerrarModal() {
             document.getElementById('modal').style.display = 'none';
         }
 
+        // Logout
         function logout() {
             localStorage.removeItem('token');
             localStorage.removeItem('role');
             window.location.href = 'login.html';
         }
 
-        function mostrarNotificacion(titulo, contenido, tipo) {
-            const noti = document.getElementById('notificacion');
-            document.getElementById('notificacion-titulo').textContent = titulo;
-            document.getElementById('notificacion-contenido').textContent = contenido;
-            noti.className = 'notificacion mostrar ' + tipo;
-            setTimeout(() => {
-                noti.className = 'notificacion';
-            }, 3000);
-        }
-
         // Cargar servicios al iniciar
         cargarServicios();
+
+        // Cerrar modal con tecla ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('modal').style.display === 'flex') {
+                cerrarModal();
+            }
+        });
+
+        // Cerrar modal al hacer clic fuera
+        window.addEventListener('click', function(e) {
+            if (e.target === document.getElementById('modal')) {
+                cerrarModal();
+            }
+        });
     </script>
 </body>
 </html>
