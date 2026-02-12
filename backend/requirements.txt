@@ -4,3 +4,10 @@ sqlalchemy==2.0.23
 python-dotenv==1.0.0
 pydantic==2.5.0
 pydantic-settings==2.1.0
+# Autenticación y seguridad
+python-jose[cryptography]==3.3.0    # JWT tokens
+passlib[bcrypt]==1.7.4             # Hash contraseñas
+python-multipart==0.0.6            # Procesar formularios
+# Imágenes
+Pillow==10.1.0                     # Procesar imágenes
+aiofiles==23.2.1                  # Guardar archivos

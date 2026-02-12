@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbershop - Admin Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            color: white;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .login-container {
+            background: rgba(0,0,0,0.8);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid #ffd700;
+            width: 100%;
+            max-width: 400px;
+        }
+        h1 {
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ffd700;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.9);
+            font-size: 1em;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #ffd700;
+            color: black;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #ffed4a;
+            transform: scale(1.02);
+        }
+        .error {
+            color: #ff6b6b;
+            margin-top: 15px;
+            text-align: center;
+        }
+        .notificacion {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.95);
+            border-left: 5px solid #ffd700;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            transform: translateX(400px);
+            transition: transform 0.5s ease;
+            z-index: 1000;
+        }
+        .notificacion.mostrar {
+            transform: translateX(0);
+        }
+        .notificacion.exito { border-left-color: #00ff00; }
+        .notificacion.error { border-left-color: #ff0000; }
+    </style>
+</head>
+<body>
+    <div id="notificacion" class="notificacion">
+        <div id="notificacion-titulo" style="font-weight:bold; margin-bottom:5px;"></div>
+        <div id="notificacion-contenido"></div>
+    </div>
+
+    <div class="login-container">
+        <h1>👑 ADMIN PANEL</h1>
+        <div class="form-group">
+            <label>👤 Usuario</label>
+            <input type="text" id="username" placeholder="admin" value="admin">
+        </div>
+        <div class="form-group">
+            <label>🔑 Contraseña</label>
+            <input type="password" id="password" placeholder="••••••••" value="admin123">
+        </div>
+        <button onclick="login()">INGRESAR</button>
+        <div id="error-message" class="error"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://127.0.0.1:8000';
+
+        async function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const formData = new FormData();
+                formData.append('username', username);
+                formData.append('password', password);
+
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('token', data.access_token);
+                    localStorage.setItem('role', data.role);
+                    mostrarNotificacion('✅ ¡Bienvenido!', 'Redirigiendo al panel...', 'exito');
+                    setTimeout(() => {
+                        window.location.href = 'servicios.html';
+                    }, 1500);
+                } else {
+                    mostrarNotificacion('❌ Error', 'Usuario o contraseña incorrectos', 'error');
+                }
+            } catch (error) {
+                mostrarNotificacion('❌ Error', 'Error de conexión', 'error');
+            }
+        }
+
+        function mostrarNotificacion(titulo, contenido, tipo) {
+            const noti = document.getElementById('notificacion');
+            document.getElementById('notificacion-titulo').textContent = titulo;
+            document.getElementById('notificacion-contenido').textContent = contenido;
+            noti.className = 'notificacion mostrar ' + tipo;
+            setTimeout(() => {
+                noti.className = 'notificacion';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
